@@ -1,0 +1,15 @@
+{
+  "name": "planet-ferrum",
+  "version": "0.0.2",
+  "title": "Planet Ferrum",
+  "author": "Centuronia",
+  "factorio_version": "2.0",
+  "dependencies": [
+    "base >= 2.0.0",
+    "space-age >= 2.0.0",
+    "spider-launcher >= 2.9.0",
+    "? linox",
+    "? Moshine"
+  ],
+  "description": "Make contact with the artificial planet Ferrum. An iron husk with a deadly atmosphere, Ferrum is an experimental planet mod where robots, buildings, and even the tech tree don't work the way you expect."
+}
