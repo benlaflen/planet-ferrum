@@ -97,6 +97,7 @@ data:extend({
     order = "z[ferrum]-e[ferrum-crude-agglomeration]",
     enabled = false,
     energy_required = 4,
+    auto_recycle=false,
     ingredients = {
       { type = "item",  name = "carbon",        amount = 10 },
       { type = "fluid", name = "sulfuric-acid", amount = 50 }
@@ -116,11 +117,15 @@ data:extend({
     enabled = false,
     energy_required = 4,
     allow_productivity = false,
+    auto_recycle = false,
     ingredients = {
       { type = "item", name = "solid-fuel", amount = 2 },
-      { type = "item", name = "iron-plate", amount = 10 }
+      { type = "item", name = "ferrum-catalyzed-iron-plate", amount = 10 }
     },
-    results = { { type = "fluid", name = "molten-iron", amount = 50 } }
+    results = { 
+      { type = "fluid", name = "molten-iron", amount = 10 } ,
+      { type = "item", name = "iron-plate", amount = 5}
+    }
   },
   {
     type = "recipe",
@@ -135,15 +140,41 @@ data:extend({
     enabled = false,
     energy_required = 4,
     allow_productivity = false,
+    auto_recycle = false,
     ingredients = {
-      { type = "item",  name = "iron-plate", amount = 10 },
+      { type = "item",  name = "ferrum-catalyzed-iron-plate", amount = 10 },
       { type = "fluid", name = "heavy-oil",  amount = 40 }
     },
     results = {
-      { type = "fluid", name = "molten-iron", amount = 50 },
-      { type = "item",  name = "carbon",      amount = 1 }
+      { type = "fluid", name = "molten-iron", amount = 30 },
+      { type = "item",  name = "carbon",      amount = 5 }
     },
     main_product = "molten-iron"
+  },
+  {
+    type = "item",
+    name = "ferrum-catalyzed-iron-plate",
+    icon = "__planet-ferrum__/graphics/icons/catalyzed-iron-plate.png",
+    icon_size = 64,
+    subgroup = "raw-material",
+    order = "z[ferrum]-e[ferrum-catalyzed-iron-plate]",
+    stack_size = 100
+  },
+  {
+    type = "recipe",
+    name = "ferrum-catalyzed-iron-plate",
+    categories = { "ferrum-infusion" },
+    enabled = false,
+    energy_required = 1,
+    ingredients = {
+      { type = "item",  name = "iron-plate",    amount = 1 },
+      { type = "fluid", name = "sulfuric-acid", amount = 10 }
+    },
+    results = {
+      { type = "item",  name = "ferrum-catalyzed-iron-plate", amount = 3 },
+      { type = "fluid", name = "water",                       amount = 10 }
+    },
+    main_product = "ferrum-catalyzed-iron-plate"
   }
 })
 
@@ -244,7 +275,10 @@ technology({
 technology({
   name = "ferrum-crude-molten-iron",
   icons = recipe_icons("ferrum-crude-molten-iron"),
-  effects = unlock("ferrum-crude-molten-iron"),
+  effects = {
+    { type = "unlock-recipe", recipe = "ferrum-crude-molten-iron" },
+    { type = "unlock-recipe", recipe = "ferrum-catalyzed-iron-plate" }
+  },
   prerequisites = { "ferrum-infusion-chemistry" },
   -- scripts/pedestal.lua enables this once the infuser exists, so the trigger cannot fire early.
   enabled = false,

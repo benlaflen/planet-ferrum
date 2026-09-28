@@ -81,6 +81,7 @@ data:extend({
     order = "z[ferrum]-a[ferrum-lubricant-pyrolysis]",
     enabled = true,
     energy_required = 2,
+    auto_recycle=false,
     ingredients = {
       { type = "item",  name = "ferrum-clay", amount = 2 },
       { type = "fluid", name = "lubricant", amount = 50  }
@@ -103,6 +104,7 @@ data:extend({
     enabled = true,
     energy_required = 2,
     allow_productivity = true,
+    auto_recycle=false,
     ingredients = {
       { type = "item",  name = "carbon", amount = 5 },
       { type = "fluid", name = "sulfuric-acid", amount = 25  }
@@ -118,6 +120,7 @@ data:extend({
     categories = { "chemistry" },
     enabled = true,
     energy_required = 2,
+    auto_recycle=false,
     ingredients = {
       { type = "item",  name = "ferrum-concentrated-clay", amount = 1 },
       { type = "fluid", name = "sulfuric-acid",     amount = 10 }
@@ -243,6 +246,7 @@ data:extend({
     order = "z[ferrum]-a[ferrum-rare-earth-micronutrients]",
     enabled = true,
     energy_required = 2,
+    auto_recycle=false,
     ingredients = {
       { type = "item", name = "ferrum-concentrated-clay", amount = 1 },
       { type = "item", name = "stone",             amount = 5 }

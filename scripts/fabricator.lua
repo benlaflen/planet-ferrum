@@ -505,3 +505,26 @@ script.on_event(defines.events.on_gui_text_changed, function(event)
   local value = tonumber(element.text)
   if fab and value and element.name == "priority" then fab.priority = math.floor(value) end
 end)
+
+-- Must match the controls in prototypes/fabricator.lua.
+local INSERT_MODES = {
+  ["drop-cursor"] = "one",
+  ["fast-entity-split"] = "half",
+  ["fast-entity-transfer"] = "stack"
+}
+
+for control, mode in pairs(INSERT_MODES) do
+  script.on_event(FABRICATOR .. "-" .. control, function(event)
+    local player = game.get_player(event.player_index)
+    local entity = player.selected
+    if not (entity and entity.valid and entity.name == FABRICATOR and player.can_reach_entity(entity)) then return end
+    local fab = fabricators()[entity.unit_number]
+    local cursor = player.cursor_stack
+    if not (fab and fab.dock.valid and cursor and cursor.valid_for_read and robot_list().effect[cursor.name]) then return end
+
+    local count = mode == "one" and 1 or mode == "half" and math.ceil(cursor.count / 2) or cursor.count
+    local inserted = fab.dock.get_inventory(defines.inventory.roboport_robot).insert({ name = cursor.name, quality = cursor.quality.name, count = count })
+    if inserted == 0 then return end
+    if inserted == cursor.count then cursor.clear() else cursor.count = cursor.count - inserted end
+  end)
+end

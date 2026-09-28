@@ -45,13 +45,13 @@ data:extend({
     type = "surface-property",
     name = "ferrum-habitability",
     default_value = 0,
-    localised_unit_key = "surface-property-unit.habitability"
+    localised_unit_key = "surface-property-unit.ferrum-habitability"
   },
   {
     type = "surface-property",
     name = "ferrum-belt-clearance",
     default_value = 0,
-    localised_unit_key = "surface-property-unit.belt-clearance"
+    localised_unit_key = "surface-property-unit.ferrum-belt-clearance"
   }
 })
 

@@ -1,9 +1,9 @@
 {
   "name": "planet-ferrum",
-  "version": "0.0.2",
+  "version": "0.1.3",
   "title": "Planet Ferrum",
   "author": "Centuronia",
-  "factorio_version": "2.0",
+  "factorio_version": "2.1",
   "dependencies": [
     "base >= 2.0.0",
     "space-age >= 2.0.0",

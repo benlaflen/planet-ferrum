@@ -206,7 +206,7 @@ script.on_event(defines.events.on_player_respawned, function(event)
     player.teleport(player.force.get_spawn_position(nauvis), nauvis)
   end
 end)
--- Unlocks for recipes added in an update (e.g. the Fabricator-only copies) only apply to already-researched techs after a reset.
+-- Unlocks for recipes added in an update only apply to already-researched techs after a reset.
 script.on_configuration_changed(function()
   for _, force in pairs(game.forces) do force.reset_technology_effects() end
 end)

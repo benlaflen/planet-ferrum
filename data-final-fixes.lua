@@ -129,64 +129,17 @@ local function mechanical(key)
   return set["item/iron-plate"] and not set["item/copper-plate"]
 end
 
--- Legal recipes are cloned into Fabricator-only copies that always allow productivity, so docked-bot productivity reaches
--- end products the way the electromagnetic plant's base productivity does. The originals are left untouched.
-local PREFIX = "ferrum-fabricated-"
-local copies, created = {}, {}
 for _, recipe in pairs(candidates) do
-  local assembler, electromagnetic, fabrication = false, false, false
+  local assembler, electromagnetic = false, false
   for _, category in pairs(categories_of(recipe)) do
     assembler = assembler or ASSEMBLER[category]
     electromagnetic = electromagnetic or ELECTROMAGNETIC[category]
-    fabrication = fabrication or category == FABRICATION
   end
   local results = recipe.results or {}
   local legal = #results > 0
   for _, result in pairs(results) do legal = legal and mechanical((result.type or "item") .. "/" .. result.name) end
   local own = recipe.name:find("^ferrum%-") ~= nil
-
-  if fabrication then
-    recipe.allow_productivity = true
-  elseif electromagnetic or (assembler and (own or legal)) then
-    local copy = table.deepcopy(recipe)
-    local suffix = recipe.name:gsub("^ferrum%-", "")
-    copy.name = PREFIX .. suffix
-    if LEGACY then
-      copy.category, copy.additional_categories = FABRICATION, nil
-    else
-      copy.categories = { FABRICATION }
-    end
-    copy.allow_productivity = true
-    copy.hide_from_player_crafting = true
-    copy.hidden_in_factoriopedia = true
-    -- "?" takes the first key that exists: the original recipe's own name, then its main product's.
-    if not copy.localised_name then
-      local name = { "?", { "recipe-name." .. recipe.name } }
-      local main = (recipe.main_product ~= "" and recipe.main_product) or (#results == 1 and results[1].name)
-      if main then
-        for _, section in pairs({ "item-name", "entity-name", "equipment-name", "fluid-name" }) do
-          table.insert(name, { section .. "." .. main })
-        end
-      end
-      copy.localised_name = name
-    end
-    copies[recipe.name] = copy.name
-    table.insert(created, copy)
-  end
-end
-data:extend(created)
-
-for _, technology in pairs(data.raw.technology) do
-  local mirrored = {}
-  for _, effect in pairs(technology.effects or {}) do
-    if copies[effect.recipe] and (effect.type == "unlock-recipe" or effect.type == "change-recipe-productivity") then
-      local twin = table.deepcopy(effect)
-      twin.recipe = copies[effect.recipe]
-      twin.hidden = true
-      table.insert(mirrored, twin)
-    end
-  end
-  for _, effect in pairs(mirrored) do table.insert(technology.effects, effect) end
+  if electromagnetic or (assembler and (own or legal)) then add_category(recipe, FABRICATION) end
 end
 
 local ROBOTICS = "ferrum-robotics-science-pack"

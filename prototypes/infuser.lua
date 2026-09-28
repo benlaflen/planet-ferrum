@@ -97,6 +97,7 @@ local cementation = {
   enabled = true,
   energy_required = 1,
   allow_productivity = true,
+  auto_recycle=false,
   ingredients = {
     { type = "item",  name = "iron-plate",  amount = 1 },
     { type = "fluid", name = "electrolyte", amount = 10 }

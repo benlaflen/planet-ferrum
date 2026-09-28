@@ -9,9 +9,9 @@ local CLIFF_SOURCE = "^__space%-age__/graphics/terrain/cliffs/fulgora/cliff%-ful
 local CLIFF_TARGET = "__planet-ferrum__/graphics/terrain/cliffs/cliff-" .. PLANET .. "-"
 
 local SOLIDS = {
-  { name = PLANET .. "-frame-ore", item = "flying-robot-frame", map_color = { 0.2, 0.2, 0.30 }, tint = { 0.4, 0.4, 0.5 }, base_density = 8, sheet = "frame-ore" },
-  { name = PLANET .. "-gear-ore",  item = "iron-gear-wheel",    map_color = { 0.55, 0.55, 0.60 }, tint = { 0.8, 0.8, 0.85 }, base_density = 10, sheet = "gear-ore" },
-  { name = PLANET .. "-clay-ore",  item = "ferrum-clay",        map_color = { 0.85, 0.75, 0.30 }, tint = { 1, 0.9, 0.5 }, base_density = 5, base = "stone" }
+  { name = PLANET .. "-frame-ore", item = "flying-robot-frame", map_color = { 0.45, 0.50, 0.85 }, tint = { 0.4, 0.4, 0.5 }, base_density = 8, sheet = "frame-ore" },
+  { name = PLANET .. "-gear-ore",  item = "iron-gear-wheel",    map_color = { 0.85, 0.85, 0.90 }, tint = { 0.8, 0.8, 0.85 }, base_density = 10, sheet = "gear-ore" },
+  { name = PLANET .. "-clay-ore",  item = "ferrum-clay",        map_color = { 1.00, 0.85, 0.30 }, tint = { 1, 0.9, 0.5 }, base_density = 5, base = "stone" }
 }
 local LUBRICANT = PLANET .. "-lubricant"
 local LUBRICANT_TINT = { 0.4, 1, 0.4 }
@@ -44,6 +44,7 @@ ground.autoplace = { probability_expression = "1" }
 
 local cliff = table.deepcopy(data.raw.cliff["cliff-fulgora"])
 cliff.name = CLIFF
+cliff.map_color = { 0.80, 0.45, 0.25 }
 for _, orientation in pairs(cliff.orientations) do
   for _, key in pairs({ "pictures", "pictures_lower" }) do
     for _, variation in pairs(orientation[key] or {}) do
@@ -178,7 +179,7 @@ well.icon = fluid.icon
 well.icon_size = fluid.icon_size
 well.icons = fluid.icons
 well.minable.results = { { type = "fluid", name = "lubricant", amount = 10 } }
-well.map_color = { 0.35, 0.70, 0.30 }
+well.map_color = { 0.40, 1.00, 0.40 }
 for _, layer in pairs(well.stages.sheet.layers or { well.stages.sheet }) do layer.tint = LUBRICANT_TINT end
 well.factoriopedia_simulation = nil
 well.autoplace = resource_autoplace.resource_autoplace_settings {

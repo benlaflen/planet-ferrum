@@ -227,3 +227,16 @@ data:extend({
     }
   }
 })
+
+-- Must match INSERT_MODES in scripts/fabricator.lua.
+for _, control in pairs({ "drop-cursor", "fast-entity-transfer", "fast-entity-split" }) do
+  data:extend({
+    {
+      type = "custom-input",
+      name = FABRICATOR .. "-" .. control,
+      key_sequence = "",
+      linked_game_control = control,
+      include_selected_prototype = true
+    }
+  })
+end

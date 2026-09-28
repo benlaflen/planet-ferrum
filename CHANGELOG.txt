@@ -1,0 +1,9 @@
+0.0.3/0.1.3:
+- Changed science pack icon to use Quality Glassware
+- Fixed localization issues with habitability and frontline robotics
+- Put all names in proper sentence case
+- Increased map contrast
+- Enabled manually inserting robots into fabricator
+- Fixed issues with recycling overriding vanilla recycling variants
+- Added catalyzed iron plates as an intermediary between iron plates and molten iron and rebalanced iron melting to make a loop far less desirable (and require obscene amounts of productivity)
+- Removed fabricator overriding productivity restrictions on its recipes to prevent other productivity-related problems
