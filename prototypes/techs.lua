@@ -185,7 +185,12 @@ for _, spec in pairs({
     table.deepcopy(template.icons[#template.icons])
   }
   t.icon = nil
-  t.effects = { { type = "change-recipe-productivity", recipe = spec.recipe, change = 0.1 } }
+  t.effects = nil
+  t.PlanetsLib_recipe_productivity_effects = { 
+    effects = {
+      { type = "item", name = spec.item, change = 0.1 }
+    }, 
+  }
   t.prerequisites = { ROBOTICS }
   t.unit.ingredients = unit(0, { Y, P, R }).ingredients
   technology(t)

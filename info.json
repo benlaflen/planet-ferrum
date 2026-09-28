@@ -6,6 +6,7 @@
   "factorio_version": "2.1",
   "dependencies": [
     "base >= 2.0.0",
+    "PlanetsLib >= 2.0.4",
     "space-age >= 2.0.0",
     "spider-launcher >= 2.9.0",
     "? linox",
