@@ -7,3 +7,6 @@
 - Fixed issues with recycling overriding vanilla recycling variants
 - Added catalyzed iron plates as an intermediary between iron plates and molten iron and rebalanced iron melting to make a loop far less desirable (and require obscene amounts of productivity)
 - Removed fabricator overriding productivity restrictions on its recipes to prevent other productivity-related problems
+
+0.0.4/0.1.4:
+- Removed binds into precursor vanilla recipes
