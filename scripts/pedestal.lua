@@ -248,12 +248,13 @@ script.on_nth_tick(WATCH_TICK, function()
   end
 end)
 
-subscribe(defines.events.on_rocket_launched, function(event)
-  local rocket = event.rocket
-  if not (rocket and rocket.valid and rocket.surface.name == PLANET) then return end
-  local cargo = rocket.get_inventory(defines.inventory.rocket)
+subscribe(defines.events.on_cargo_pod_finished_ascending, function(event)
+  if not event.launched_by_rocket then return end
+  local pod = event.cargo_pod
+  if not (pod and pod.valid and pod.surface.name == PLANET) then return end
+  local cargo = pod.get_inventory(defines.inventory.cargo_unit)
   if not (cargo and cargo.get_item_count(LAUNCH_ITEM) > 0) then return end
-  local force = rocket.force
+  local force = pod.force
   for _, name in pairs(LAUNCH) do
     local tech = force.technologies[name]
     if tech and tech.enabled then finish(force, name) end
