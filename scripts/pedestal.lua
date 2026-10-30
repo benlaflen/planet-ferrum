@@ -46,7 +46,7 @@ local WATCH = {
 -- The two slow variants wait on a launch instead of a count.
 local LAUNCH = { "ferrum-full-agglomeration-slow", "ferrum-full-molten-iron-slow" }
 local LAUNCH_ITEM = "ferrum-robotics-science-pack"
--- control.lua owns 120 and 6, scripts/fabricator.lua owns 60, scripts/infuser.lua owns 1.
+-- control.lua owns 6, scripts/fabricator.lua owns 60, scripts/infuser.lua owns 1.
 local WATCH_TICK = 181
 local FRAME = "ferrum-pedestal-frame"
 local HIGHLIGHT = { r = 1, g = 0.3, b = 0.2 }
@@ -248,12 +248,14 @@ script.on_nth_tick(WATCH_TICK, function()
   end
 end)
 
-subscribe(defines.events.on_rocket_launched, function(event)
-  local rocket = event.rocket
-  if not (rocket and rocket.valid and rocket.surface.name == PLANET) then return end
-  local cargo = rocket.get_inventory(defines.inventory.rocket)
+-- 2.1 removed defines.inventory.rocket; the launched payload is read from the cargo pod instead.
+subscribe(defines.events.on_cargo_pod_finished_ascending, function(event)
+  if not event.launched_by_rocket then return end
+  local pod = event.cargo_pod
+  if not (pod and pod.valid and pod.surface.name == PLANET) then return end
+  local cargo = pod.get_inventory(defines.inventory.cargo_unit)
   if not (cargo and cargo.get_item_count(LAUNCH_ITEM) > 0) then return end
-  local force = rocket.force
+  local force = pod.force
   for _, name in pairs(LAUNCH) do
     local tech = force.technologies[name]
     if tech and tech.enabled then finish(force, name) end

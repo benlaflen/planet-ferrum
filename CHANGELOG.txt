@@ -10,3 +10,9 @@
 
 0.0.4/0.1.4:
 - Removed binds into precursor vanilla recipes
+
+0.0.5/0.1.5:
+- Fixed a variety of problems related to lighting and solar
+- Fixed a graphical bug related to the productivity icon
+- Fixed a crash when launching rockets
+- Updated the Planetslib dependency version to be possible to use on 2.0 (if that's still relevant at all...)

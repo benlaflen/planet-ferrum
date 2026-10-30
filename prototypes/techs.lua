@@ -113,7 +113,7 @@ technology({
 
 technology({
   name = ROBOTICS,
-  icons = pack.icons,
+  icons = table.deepcopy(pack.icons),
   effects = { { type = "unlock-recipe", recipe = ROBOTICS } },
   prerequisites = { "ferrum-rare-earth-processing" },
   research_trigger = { type = "craft-item", item = "ferrum-rare-earth-magnet", count = 50 }

@@ -10,11 +10,12 @@ local PLANET = "ferrum"
 local TECH = PLANET .. "-contact"
 local PORT = PLANET .. "-roboport"
 local BELT_TECH = "ferrum-deionizing-belts"
+-- Engine default is 0.15. Must match the migration that applies it to existing saves.
+local NIGHT_BRIGHTNESS = 0.12
 -- scripts/fabricator.lua owns on_nth_tick(60); on_nth_tick replaces any handler already on the same interval.
-local SLOW_TICK = 120
--- Surface daytime is frozen and swung between these over the planet's day-night cycle (0.45 = fully dark).
-local DAYTIME_DAY, DAYTIME_NIGHT = 0.40, 0.45
--- Lightning flashes briefly pull daytime toward noon (0.30 is about 80% brightness, 0.36 about 50%).
+local FLASH_TICK = 6
+-- Lightning flashes briefly freeze daytime and pull it toward noon (0.30 is about 80% brightness, 0.36 about 50%).
+-- Only rolled while the real daytime is darker than a flash would be.
 local FLASH_CHANCE = 0.01
 local FLASH_MAX_PULSES = 3
 local FLASH_DAYTIME = { 0.30, 0.36 }
@@ -117,15 +118,9 @@ script.on_event(defines.events.on_space_platform_changed_state, function(event)
   if not tech.researched then tech.researched = true end
 end)
 
-script.on_nth_tick(SLOW_TICK, function()
-  local surface = game.planets[PLANET].surface
-  if not surface then return end
-
-  surface.freeze_daytime = true
-  local cycle = surface.get_property("day-night-cycle")
-  local phase = (game.tick % cycle) / cycle
-  storage.daytime = DAYTIME_DAY + (DAYTIME_NIGHT - DAYTIME_DAY) * (1 - math.cos(2 * math.pi * phase)) / 2
-  if not storage.flash_on then surface.daytime = storage.daytime end
+subscribe(defines.events.on_surface_created, function(event)
+  local surface = game.get_surface(event.surface_index)
+  if surface and surface.name == PLANET then surface.min_brightness = NIGHT_BRIGHTNESS end
 end)
 
 script.on_event(defines.events.on_entity_damaged, function(event)
@@ -152,18 +147,21 @@ end, {
   { filter = "damage-type", type = "fire", mode = "and" }
 })
 
-script.on_nth_tick(6, function()
+script.on_nth_tick(FLASH_TICK, function()
   local surface = game.planets[PLANET].surface
   if surface then
     storage.flash_pulses = storage.flash_pulses or 0
     if storage.flash_on then
       storage.flash_on = false
-      surface.daytime = storage.daytime or DAYTIME_NIGHT
+      surface.daytime = (storage.daytime + FLASH_TICK / surface.ticks_per_day) % 1
+      surface.freeze_daytime = false
     elseif storage.flash_pulses > 0 then
       storage.flash_pulses = storage.flash_pulses - 1
       storage.flash_on = true
+      storage.daytime = surface.daytime
+      surface.freeze_daytime = true
       surface.daytime = FLASH_DAYTIME[1] + math.random() * (FLASH_DAYTIME[2] - FLASH_DAYTIME[1])
-    elseif math.random() < FLASH_CHANCE then
+    elseif math.abs(surface.daytime - 0.5) < 0.5 - FLASH_DAYTIME[2] and math.random() < FLASH_CHANCE then
       storage.flash_pulses = math.random(1, FLASH_MAX_PULSES)
     end
   end
