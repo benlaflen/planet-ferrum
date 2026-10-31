@@ -8,6 +8,12 @@ local function icons_of(prototype)
   return prototype.icons or { { icon = prototype.icon, icon_size = prototype.icon_size or 64 } }
 end
 
+-- Vanilla-proportioned shadow, then drop the constant-planet overlay: this tech
+-- uses use_icon_overlay_constant = false and originally had a single icon layer.
+local ferrum_discovery_icons = PlanetsLib.technology_icon_planet(
+  "__planet-ferrum__/graphics/icons/starmap-planet-ferrum.png", 512, 0.9)
+ferrum_discovery_icons[#ferrum_discovery_icons] = nil
+
 -- "Red-white": automation, logistic, chemical, space.
 local function unit(count, extra)
   local ingredients = {
@@ -67,7 +73,7 @@ local R = { ROBOTICS, 1 }
 
 technology({
   name = "planet-discovery-ferrum",
-  icons = icons_of(data.raw.planet["ferrum"]),
+  icons = ferrum_discovery_icons,
   essential = true,
   effects = { { type = "unlock-space-location", space_location = "ferrum", use_icon_overlay_constant = false } },
   prerequisites = { "logistic-system", "construction-robotics", "electromagnetic-science-pack", "metallurgic-science-pack" },
