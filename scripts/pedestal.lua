@@ -225,6 +225,14 @@ local function baselines(force)
   return storage.ferrum_baselines[force.index]
 end
 
+local function count_all_qualities(statistics, item)
+  local total = 0
+  for quality in pairs(prototypes.quality) do
+    total = total + statistics.get_input_count({ name = item, quality = quality })
+  end
+  return total
+end
+
 script.on_nth_tick(WATCH_TICK, function()
   local planet = game.planets[PLANET]
   local surface = planet and planet.surface
@@ -236,7 +244,7 @@ script.on_nth_tick(WATCH_TICK, function()
       local tech = force.technologies[name]
       -- enabled means the path has reached this trigger; researched means it already fired.
       if tech and tech.enabled and not tech.researched then
-        local count = produced.get_input_count(target.item)
+        local count = count_all_qualities(produced, target.item)
         if not baseline[name] then
           baseline[name] = count
         elseif count - baseline[name] >= target.count then
