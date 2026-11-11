@@ -2,7 +2,7 @@
 set -e
 cd "$(dirname "$0")"
 
-INCLUDE="control.lua data.lua data-updates.lua data-final-fixes.lua info.json thumbnail.png CHANGELOG.txt LICENSE graphics locale migrations prototypes scripts"
+INCLUDE="control.lua data.lua data-updates.lua data-final-fixes.lua info.json thumbnail.png changelog.txt LICENSE graphics locale migrations prototypes scripts"
 
 package() {
   name=$(sed -n 's/.*"name": *"\([^"]*\)".*/\1/p' info.json)

@@ -11,6 +11,17 @@ if LEGACY then
   end
 end
 
+-- Some mods remove Kovarex; U-235 then has to come from separation instead.
+if not data.raw.technology["kovarex-enrichment-process"] then
+  local fabricator = data.raw.technology["ferrum-fabricator"]
+  for i, prerequisite in pairs(fabricator.prerequisites) do
+    if prerequisite == "kovarex-enrichment-process" then table.remove(fabricator.prerequisites, i) break end
+  end
+  for _, result in pairs(data.raw.recipe["ferrum-rare-earth-separation"].results) do
+    if result.name == "uranium-238" then result.name, result.probability = "uranium-235", 0.002 end
+  end
+end
+
 -- 2.1 renamed a product's probability to independent_probability.
 if not LEGACY then
   for name, recipe in pairs(data.raw.recipe) do
