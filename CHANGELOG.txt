@@ -1,4 +1,16 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.6
+  Bugfixes:
+    - Trigger techs now accept all levels of quality
+  Compatibility:
+    - Added some defensive code so that if other mods remove Kovarex Ferrum can adapt accordingly (as long as they're nice about it)
+---------------------------------------------------------------------------------------------------
+Version: 0.0.6
+  Bugfixes:
+    - Trigger techs now accept all levels of quality
+  Compatibility:
+    - Added some defensive code so that if other mods remove Kovarex Ferrum can adapt accordingly (as long as they're nice about it)
+---------------------------------------------------------------------------------------------------
 Version: 0.1.5
   Bugfixes:
     - Fixed a variety of problems related to lighting and solar.
